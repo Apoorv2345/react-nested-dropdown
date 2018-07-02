@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {DDItems, SubDDItems} from "./DDItems.js";
+import {DDItems, SubDDItems} from "./DDItems";
 import "./NestedDD.css";
 
 export default class NestedDropdown extends PureComponent {
@@ -182,7 +182,7 @@ const MetaTags= ({metaTagList, deleteMetaTag })=>{
         {metaTagList.map(({label, id})=>{
             return <li title={label} key={id} className="meta-tag">
                 <p>{label}</p>
-                <a href="javascript:"><span onClick={()=>{deleteMetaTag(id)}}>X</span></a>
+                <a onClick={()=>{deleteMetaTag(id)}}><span>X</span></a>
             </li>;
         })}
     </ul>;

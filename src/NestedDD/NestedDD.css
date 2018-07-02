@@ -123,6 +123,7 @@ h4 {
     top: 0;
     right: 0;
     color: #888;
+    cursor: pointer;
     width: 36px;
     height: 33px;
     display: none;
