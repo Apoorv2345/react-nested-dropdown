@@ -130,10 +130,25 @@ export default class NestedDropdown extends PureComponent {
         }
     };
 
+    deleteMetaTag=(selId)=> {
+        const {metaTagList}= this.state,
+        element= metaTagList.find(({id})=>{return id===selId;}),
+        index= metaTagList.indexOf(element);
+        if (index > -1) {
+            metaTagList.splice(index, 1);
+        };
+
+        this.setState({
+            ...this.state,
+            metaTagList:[...metaTagList]
+        });
+    }
+
     render() {
         const {
             selectedSubItem:{label:selLabel}={},
             metaTagList=[], 
+            metaTagList:{length}, 
             selectedItem:{id:selId, label:subItemsHeading}={}, 
             showList, 
             subItems=[],
@@ -141,10 +156,9 @@ export default class NestedDropdown extends PureComponent {
         {dropdownData, multiSelect, checkboxes}= this.props;
 
         return <div className="nestedDD" ref="nestedDD">
+            {multiSelect && <MetaTags metaTagList={metaTagList} deleteMetaTag={this.deleteMetaTag}/>}
             <div className="srchTxt" onClick={()=>{this.toggleList()}}>
-                {multiSelect? metaTagList.map(({label, id})=>{
-                    return <MetaTag label={label} key={id} />
-                }) :selLabel}
+                {multiSelect? `${length} items`:selLabel}
             </div>
             <div className={`items-group  ${(showList?'show':'hide')}`}>
             <DDItems {...{
@@ -163,6 +177,18 @@ export default class NestedDropdown extends PureComponent {
     }
 }
 
-const MetaTag= ({label, deleteTag })=>{
-    return <div>{label} <span className="cnlRsec" onClick={deleteTag} >X</span></div>
+const MetaTags= ({metaTagList, deleteMetaTag })=>{
+    return <ul className="cdList tags">
+        {metaTagList.map(({label, id})=>{
+            return <li title={label} key={id} className="meta-tag">
+                <p>{label}</p>
+                <a href="javascript:"><span onClick={()=>{deleteMetaTag(id)}}>X</span></a>
+            </li>;
+        })}
+    </ul>;
+
+    // return metaTagList.map(({label, id})=>{
+    //     return <div className="meta-tag" key={id} title={label}>{label} <span className="cnlRsec" onClick={()=>{deleteMetaTag(id)}} >X</span></div>
+    // })
+    // return <div>{label} <span className="cnlRsec" onClick={deleteMetaTag} >X</span></div>
 }

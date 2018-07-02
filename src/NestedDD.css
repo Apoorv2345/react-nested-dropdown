@@ -7,7 +7,7 @@
 }
 
 h4 {
-    padding: 5px;
+    padding: 10px;
     background: #61DAFB;
     margin: 0;
 }
@@ -28,10 +28,10 @@ h4 {
     display: block;
 }
 
-.cnlRsec {
+.subItems-cnt .cnlRsec {
     cursor: pointer;
     float: right;
-    padding: 5px;
+    padding: 10px;
 }
 
 .itemChbk {
@@ -81,6 +81,69 @@ h4 {
     position: absolute;
     width: 100%;
     z-index: 999;
+}
+
+.tags {
+    padding: 2px;
+    width: 100%;
+    overflow: hidden;
+    list-style-type: none;
+    margin: 0;
+}
+
+.tags .cnlRsec {
+    cursor: pointer;
+    float: right;
+    padding: 5px;
+}
+
+.meta-tag {
+    max-width: 174px;
+    width: auto;
+    float: left;
+    margin: 3px 5px 3px 3px;
+    position: relative;
+}
+
+.meta-tag p {
+    background: #eee;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 97px;
+    float: left;
+    padding: 9px 11px;
+    font-size: 13px;
+    color: #535252;
+    margin: 0;
+    white-space: nowrap;
+    font-weight: 400;
+}
+
+.meta-tag a {
+    top: 0;
+    right: 0;
+    color: #888;
+    width: 36px;
+    height: 33px;
+    display: none;
+    font-weight: 100;
+    line-height: 30px;
+    text-align: center;
+    background: #c9f6e8;
+    overflow: hidden;
+    position: absolute;
+    text-decoration: none;
+}
+
+.meta-tag:hover p {
+    background: #6dcaa6;
+    color: #fff;
+}
+
+.meta-tag:hover a {
+    background: #51b18c;
+    color: #e7f6f9;
+    display: block;
 }
 
 
