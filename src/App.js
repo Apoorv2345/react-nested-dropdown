@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import NestedDD from "./NestedDD/NestedDD.js";
+import NestedDD from "./NestedDD/index.js";
 import './App.css';
 
 class App extends Component {
