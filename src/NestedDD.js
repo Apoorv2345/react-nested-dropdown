@@ -73,16 +73,25 @@ export default class NestedDropdown extends PureComponent {
     selectSubItem=(selId)=> {
         const {subItems, metaTagList}= this.state,
             selectedSubItem= subItems.find(({id})=>{return id===selId;});
+        let itemAlreadyPresent;
+
             if(this.props.multiSelect) {
-                this.setState({
+                itemAlreadyPresent= metaTagList.find(({id})=>{ return id===selId});
+                
+                // If Item not present then add it to the list
+                !itemAlreadyPresent && this.setState({
                     ...this.state,
                     metaTagList:[...metaTagList, selectedSubItem]
-                })
+                },()=>{
+                    this.props.onSelectCallBack(this.state.metaTagList)
+                });
             } else {
                 this.setState({
                     ...this.state,
                     selectedSubItem
-                })
+                },()=>{
+                this.props.onSelectCallBack(selectedSubItem)
+            });
             }
     }
 
@@ -133,7 +142,9 @@ export default class NestedDropdown extends PureComponent {
 
         return <div className="nestedDD" ref="nestedDD">
             <div className="srchTxt" onClick={()=>{this.toggleList()}}>
-                {multiSelect? metaTagList :selLabel}
+                {multiSelect? metaTagList.map(({label, id})=>{
+                    return <MetaTag label={label} key={id} />
+                }) :selLabel}
             </div>
             <div className={`items-group  ${(showList?'show':'hide')}`}>
             <DDItems {...{
@@ -152,6 +163,6 @@ export default class NestedDropdown extends PureComponent {
     }
 }
 
-const MetaTag= ({label, id, deleteTag })=>{
-    return <div>{label} <span className="cnlRsec" onClick={clearSubItemList} >X</span></div>
+const MetaTag= ({label, deleteTag })=>{
+    return <div>{label} <span className="cnlRsec" onClick={deleteTag} >X</span></div>
 }
