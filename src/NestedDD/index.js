@@ -1,9 +1,8 @@
-let {Virtual}= window.interfaces;
-// import React, { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import {DDItems, SubDDItems} from "./DDItems";
-// import "./NestedDD.css";
+import "./NestedDD.css";
 
-export default class NestedDropdown extends Virtual.PureComponent {
+export default class NestedDropdown extends PureComponent {
 
     state= {
         selectedItem:'',
@@ -171,12 +170,15 @@ export default class NestedDropdown extends Virtual.PureComponent {
                 selectItem: id=>{this.selectItem(id)}, 
                 openSubItemList:id=>{this.openSubItemList(id)}, 
                 checkboxes, 
-                selId
+                selId,
+                multiSelect
                 }} />
             {(subItems.length>0) && <SubDDItems {...{subItemsHeading, subItems, 
                 selectSubItem: this.selectSubItem,
                 clearSubItemList: this.clearSubItemList, 
                 checkboxes,
+                multiSelect,
+                metaTagList,
                 selSubItemId}}/>}
             </div>
             </div>

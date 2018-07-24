@@ -30,13 +30,19 @@ export const SubDDItems = ({
     selectSubItem, 
     checkboxes, 
     clearSubItemList,
+    multiSelect,
+    metaTagList=[],
     selSubItemId }) => {
     return <div className="subItems-cnt">
         <span className="cnlRsec" onClick={clearSubItemList} >X</span>
         <h4>{subItemsHeading}</h4>
         <ul className="subItems">
-            {subItems.map(({ id, label }) => {
+            {!multiSelect && subItems.map(({ id, label }) => {
                 return <SubItem className={`item ${selSubItemId == id ? 'active' : ''}`} id={id} key={id} title={label} selectItem={()=>{selectSubItem(id)}} itemChbk={checkboxes}/>;
+            })}
+
+            {multiSelect && subItems.map(({ id, label }) => {
+                return <SubItem className={`item`} id={id} key={id} title={label} selectItem={()=>{selectSubItem(id)}} metaTagList={metaTagList} multiSelect itemChbk={checkboxes}/>;
             })}
         </ul>
     </div>;
@@ -44,7 +50,17 @@ export const SubDDItems = ({
 
 
 
-const SubItem = ({title, selectItem, children, className, itemChbk, id, checkBoxClassName="", status="" }) => {
+const SubItem = ({title, selectItem, children, className, itemChbk, id, checkBoxClassName="", status="", metaTagList=[], multiSelect }) => {
+    if(multiSelect) {
+        let isActive= metaTagList.find(({id:selId})=>{
+            return selId===id;
+        })
+
+        if(isActive) {
+            className+=' active';
+            status='checked';
+        }
+    }
     return <li className={className} onClick={selectItem} title={title}>
                 {itemChbk && <Checkbox className={checkBoxClassName} status={status} selectItem={selectItem}/>}
                 <a>

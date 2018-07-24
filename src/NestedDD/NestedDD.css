@@ -44,6 +44,12 @@ h4 {
     vertical-align: baseline;
 }
 
+.itemChbk.checked {
+    background: blue;
+    border: 2px solid #fff;
+    outline: 1px solid blue;
+}
+
 .item {
     padding: 5px;
     cursor: pointer;
