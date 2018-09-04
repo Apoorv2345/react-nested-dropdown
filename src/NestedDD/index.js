@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import {DDItems, SubDDItems} from "./DDItems";
 import "./NestedDD.css";
 
+
 export default class NestedDropdown extends PureComponent {
 
     state= {
@@ -9,18 +10,31 @@ export default class NestedDropdown extends PureComponent {
         selectedSubItem:'',
         showList: false,
         metaTagList:[],
-        subItems:[]
+        items:[this.props.dropdownData]
     }
 
+    /**
+     * [componentDidMount lifecycle function]
+     * @return {[type]} [description]
+     */
     componentDidMount() {
         document.addEventListener('mousedown', (event)=>{this.handleClickOutside(event)});
     }
     
+    /**
+     * [componentWillUnmount lifecycle function]
+     * @return {[type]} [description]
+     */
     componentWillUnmount() {
         document.removeEventListener('mousedown', (event)=>{this.handleClickOutside(event)});
     }
     
 
+    /**
+     * [searchInDropdown search for item in list with corresponding key]
+     * @param  {[type]} selId [description]
+     * @return {[type]}       [description]
+     */
     searchInDropdown(selId) {
         const {dropdownData, dropdownData:{length}}= this.props;
 
@@ -44,6 +58,11 @@ export default class NestedDropdown extends PureComponent {
         return {id:'', label:''};
     }
 
+    /**
+     * [handleClickOutside triggered whenever user performs a click, to close dropdown when clicked on outside area]
+     * @param  {[type]} options.target [description]
+     * @return {[type]}                [description]
+     */
     handleClickOutside({target}) {
         if (this.refs.nestedDD && !this.refs.nestedDD.contains(target)) {
             // close dropdown
@@ -51,6 +70,10 @@ export default class NestedDropdown extends PureComponent {
           }
     }
 
+    /**
+     * [closeDropdown to close dropdown]
+     * @return {[type]} [description]
+     */
     closeDropdown() {
         this.setState({
             ...this.state,
@@ -58,6 +81,11 @@ export default class NestedDropdown extends PureComponent {
         })
     }
 
+    /**
+     * [selectItem select item in the list & populate corresponding subItems]
+     * @param  {[type]} selId [description]
+     * @return {[type]}       [description]
+     */
     selectItem(selId) {
         const {dropdownData}= this.props,
         // let selectedItem= this.searchInDropdown(selId);
@@ -70,6 +98,11 @@ export default class NestedDropdown extends PureComponent {
         });
     }
 
+    /**
+     * [selectSubItem select subitem in list]
+     * @param  {[type]} selId [description]
+     * @return {[type]}       [description]
+     */
     selectSubItem=(selId)=> {
         const {subItems, metaTagList}= this.state,
         {onSelectCallBack}= this.props,
@@ -97,6 +130,10 @@ export default class NestedDropdown extends PureComponent {
             }
     }
 
+    /**
+     * [clearSubItemList clear subitem list]
+     * @return {[type]} [description]
+     */
     clearSubItemList=()=>{
         this.setState({
             ...this.state,
@@ -105,6 +142,10 @@ export default class NestedDropdown extends PureComponent {
         })
     }
 
+    /**
+     * [toggleList show/hide list]
+     * @return {[type]} [description]
+     */
     toggleList() {
         this.setState({
             ...this.state,
@@ -112,13 +153,11 @@ export default class NestedDropdown extends PureComponent {
         })
     }
 
-    handleInputChange=({target:{value}})=>{
-        this.setState({
-            ...this.state,
-            selLabel: value
-        })
-    }
-
+    /**
+     * [openSubItemList open subitem list with corresponding id]
+     * @param  {[type]} selId [description]
+     * @return {[type]}       [description]
+     */
     openSubItemList(selId){
         const {dropdownData}= this.props,
         selectedItem= dropdownData.find(({id})=>{ return id === selId;}),
@@ -132,6 +171,11 @@ export default class NestedDropdown extends PureComponent {
         }
     };
 
+    /**
+     * [deleteMetaTag remove meta tag corresponding to the item(Multiple select DD)]
+     * @param  {[type]} selId [description]
+     * @return {[type]}       [description]
+     */
     deleteMetaTag=(selId)=> {
         const {metaTagList}= this.state,
         element= metaTagList.find(({id})=>{return id===selId;}),
@@ -146,6 +190,11 @@ export default class NestedDropdown extends PureComponent {
         });
     }
 
+
+    /**
+     * [render render function of Nested Dropdown ]
+     * @return {[type]} [description]
+     */
     render() {
         const {
             selectedSubItem:{label:selLabel="", id:selSubItemId}={},
@@ -154,8 +203,9 @@ export default class NestedDropdown extends PureComponent {
             selectedItem:{id:selId, label:subItemsHeading}={}, 
             showList, 
             subItems=[],
+            items=[],
         }= this.state,
-        {dropdownData, multiSelect, checkboxes}= this.props;
+        {multiSelect, checkboxes}= this.props;
 
         return <div className="nestedDD" ref="nestedDD">
             {multiSelect && <MetaTags metaTagList={metaTagList} deleteMetaTag={this.deleteMetaTag}/>}
@@ -166,7 +216,7 @@ export default class NestedDropdown extends PureComponent {
             </div>
             <div className={`items-group  ${(showList?'show':'hide')}`}>
             <DDItems {...{
-                dropdownData, 
+                dropdownData:items[0], 
                 selectItem: id=>{this.selectItem(id)}, 
                 openSubItemList:id=>{this.openSubItemList(id)}, 
                 checkboxes, 
@@ -185,6 +235,12 @@ export default class NestedDropdown extends PureComponent {
     }
 }
 
+/**
+ * [MetaTags stateless component for rendering meta tags]
+ * @param  {[type]} options.metaTagList   [description]
+ * @param  {[type]} options.deleteMetaTag [description]
+ * @return {[type]}                       [description]
+ */
 const MetaTags= ({metaTagList, deleteMetaTag })=>{
     return <ul className="cdList tags">
         {metaTagList.map(({label, id})=>{
